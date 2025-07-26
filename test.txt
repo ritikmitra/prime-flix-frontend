@@ -1,0 +1,16 @@
+ffmpeg -i rickepisode1.mkv -c:v libx264 -c:a aac -ac 2 -strict -2 -b:a 128k -hls_time 10 -hls_list_size 0 -hls_segment_filename "output_%03d.ts" output.m3u8
+
+.\ConvertToHLS.ps1 
+-InputFile "D:\Videos\ep1.mkv" -EpisodeName "episode_1" -PublicFolder "D:\MyOTT\frontend\public\video"
+
+
+ffmpeg -allowed_extensions ALL -i output_vtt.m3u8 output_merged.vtt
+
+
+ffmpeg -i "rickepisode1.mkv" `
+  -map 0:v -map 0:a `
+  -c:v libx264 -c:a aac -ac 2 -b:a 128k -preset veryfast `
+  -hls_time 10 -hls_list_size 0 `
+  -hls_segment_filename "output_%03d.ts" `
+  -f hls output.m3u8 `
+  -map 0:s:0 -f webvtt subtitles.vtt
